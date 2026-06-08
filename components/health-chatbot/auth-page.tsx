@@ -150,11 +150,11 @@ export function AuthPage() {
   if (isLoadingSession) {
     return (
       <div className="min-h-screen bg-background text-foreground">
-        <header className="border-b border-border bg-card/85 backdrop-blur-sm">
+        <header className="border-b" style={{ borderColor: 'var(--border)' }}>
           <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4">
-            <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-accent/70 dark:hover:bg-accent/40">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-                <Heart className="h-4 w-4 text-primary" />
+            <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-accent/10">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg">
+                <Heart className="h-4 w-4 text-accent" fill="currentColor" />
               </div>
               <span className="text-sm font-semibold">HealthGuidelineEdge</span>
             </Link>
@@ -175,11 +175,11 @@ export function AuthPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border bg-card/85 backdrop-blur-sm">
+      <header className="border-b" style={{ borderColor: 'var(--border)' }}>
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-accent/70 dark:hover:bg-accent/40">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-              <Heart className="h-4 w-4 text-primary" />
+          <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-accent/10">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg">
+              <Heart className="h-4 w-4 text-accent" fill="currentColor" />
             </div>
             <span className="text-sm font-semibold">HealthGuidelineEdge</span>
           </Link>
@@ -188,10 +188,10 @@ export function AuthPage() {
       </header>
 
       <main className="flex min-h-[calc(100vh-56px)] items-center justify-center p-6">
-        <Card className="w-full max-w-md border-border/80">
+        <Card className="w-full max-w-md">
           <CardHeader className="space-y-2">
             <CardTitle className="flex items-center gap-2 text-xl">
-              <ShieldCheck className="h-5 w-5 text-primary" />
+              <ShieldCheck className="h-5 w-5 text-accent" />
               {t('auth.secureAccess')}
             </CardTitle>
             <CardDescription>{t('auth.secureAccessDesc')}</CardDescription>

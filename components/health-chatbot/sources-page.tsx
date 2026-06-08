@@ -347,7 +347,7 @@ export function SourcesPage({
 
   return (
     <div className="flex-1 overflow-hidden flex flex-col">
-      <div className="px-6 py-4 border-b border-border bg-card/50">
+      <div className="px-6 py-4 border-b bg-card" style={{ borderColor: 'var(--border)' }}>
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-xl font-semibold text-foreground">{t('sources.title')}</h1>
@@ -376,7 +376,7 @@ export function SourcesPage({
             <span className="text-muted-foreground">{t('sources.total')}</span>
             <span className="font-medium">{sources.length}</span>
           </div>
-          <div className="w-px h-4 bg-border" />
+          <div className="w-px h-4" style={{ backgroundColor: 'var(--border)' }} />
           <div className="flex items-center gap-2 text-sm">
             <span className="text-muted-foreground">{t('sources.ready')}</span>
             <span className="font-medium">{statusCounts.ready}</span>

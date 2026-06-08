@@ -3,99 +3,99 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* HealthGuidelineEdge theme */
+/* HealthGuidelineEdge theme - PostHog-inspired warm aesthetic */
 :root {
-  /* Light mode - Clean clinical white */
-  --background: oklch(0.985 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.55 0.15 220);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.96 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.96 0.005 240);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.55 0.15 220);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.9 0 0);
-  --input: oklch(0.9 0 0);
-  --ring: oklch(0.55 0.15 220);
+  /* Light mode - Warm cream base */
+  --background: #f5f3f0;
+  --foreground: #1a1816;
+  --card: #faf9f7;
+  --card-foreground: #1a1816;
+  --popover: #faf9f7;
+  --popover-foreground: #1a1816;
+  --primary: #ffa500;
+  --primary-foreground: #1a1816;
+  --secondary: #f0ede9;
+  --secondary-foreground: #1a1816;
+  --muted: #e8e5e0;
+  --muted-foreground: #6b6763;
+  --accent: #ffa500;
+  --accent-foreground: #1a1816;
+  --destructive: #ef4444;
+  --destructive-foreground: #faf9f7;
+  --border: #3a3835;
+  --input: #faf9f7;
+  --ring: #ffa500;
   
   /* Clinical semantic colors */
-  --clinical-success: oklch(0.65 0.18 145);
-  --clinical-warning: oklch(0.75 0.15 85);
-  --clinical-info: oklch(0.55 0.15 220);
-  --clinical-caution: oklch(0.65 0.15 55);
+  --clinical-success: #10b981;
+  --clinical-warning: #f59e0b;
+  --clinical-info: #06b6d4;
+  --clinical-caution: #f97316;
   
   /* Chart colors */
-  --chart-1: oklch(0.55 0.15 220);
-  --chart-2: oklch(0.65 0.18 145);
-  --chart-3: oklch(0.75 0.15 85);
-  --chart-4: oklch(0.55 0.2 25);
-  --chart-5: oklch(0.65 0.15 55);
+  --chart-1: #ffa500;
+  --chart-2: #10b981;
+  --chart-3: #06b6d4;
+  --chart-4: #f59e0b;
+  --chart-5: #f97316;
   
-  --radius: 0.5rem;
+  --radius: 0.25rem;
   
-  /* Sidebar */
-  --sidebar: oklch(0.98 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.55 0.15 220);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.94 0.01 220);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.9 0 0);
-  --sidebar-ring: oklch(0.55 0.15 220);
+  /* Sidebar - light */
+  --sidebar: #faf9f7;
+  --sidebar-foreground: #1a1816;
+  --sidebar-primary: #ffa500;
+  --sidebar-primary-foreground: #1a1816;
+  --sidebar-accent: #f0ede9;
+  --sidebar-accent-foreground: #1a1816;
+  --sidebar-border: #3a3835;
+  --sidebar-ring: #ffa500;
 }
 
 .dark {
-  /* Dark mode - Professional clinical dark */
-  --background: oklch(0.12 0.005 260);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.16 0.005 260);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.14 0.005 260);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.7 0.15 220);
-  --primary-foreground: oklch(0.12 0.005 260);
-  --secondary: oklch(0.22 0.01 260);
-  --secondary-foreground: oklch(0.95 0 0);
-  --muted: oklch(0.22 0.01 260);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.7 0.15 220);
-  --accent-foreground: oklch(0.12 0.005 260);
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.95 0 0);
-  --border: oklch(0.25 0.01 260);
-  --input: oklch(0.22 0.01 260);
-  --ring: oklch(0.7 0.15 220);
+  /* Dark mode - Warm dark tone inspired by PostHog */
+  --background: #1a1815;
+  --foreground: #f9f8f6;
+  --card: #262219;
+  --card-foreground: #f9f8f6;
+  --popover: #262219;
+  --popover-foreground: #f9f8f6;
+  --primary: #f59e0b;
+  --primary-foreground: #1a1815;
+  --secondary: #3a3835;
+  --secondary-foreground: #f9f8f6;
+  --muted: #3a3835;
+  --muted-foreground: #b8b4ae;
+  --accent: #f59e0b;
+  --accent-foreground: #1a1815;
+  --destructive: #f87171;
+  --destructive-foreground: #1a1815;
+  --border: #4a4844;
+  --input: #3a3835;
+  --ring: #f59e0b;
   
   /* Clinical semantic colors - dark mode */
-  --clinical-success: oklch(0.7 0.18 145);
-  --clinical-warning: oklch(0.8 0.15 85);
-  --clinical-info: oklch(0.7 0.15 220);
-  --clinical-caution: oklch(0.75 0.15 55);
+  --clinical-success: #34d399;
+  --clinical-warning: #fbbf24;
+  --clinical-info: #22d3ee;
+  --clinical-caution: #fb923c;
   
   /* Chart colors - dark mode */
-  --chart-1: oklch(0.7 0.15 220);
-  --chart-2: oklch(0.7 0.18 145);
-  --chart-3: oklch(0.8 0.15 85);
-  --chart-4: oklch(0.6 0.22 25);
-  --chart-5: oklch(0.75 0.15 55);
+  --chart-1: #f59e0b;
+  --chart-2: #34d399;
+  --chart-3: #22d3ee;
+  --chart-4: #fbbf24;
+  --chart-5: #fb923c;
   
   /* Sidebar - dark mode */
-  --sidebar: oklch(0.1 0.005 260);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.7 0.15 220);
-  --sidebar-primary-foreground: oklch(0.12 0.005 260);
-  --sidebar-accent: oklch(0.18 0.01 260);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.22 0.01 260);
-  --sidebar-ring: oklch(0.7 0.15 220);
+  --sidebar: #1a1815;
+  --sidebar-foreground: #f9f8f6;
+  --sidebar-primary: #f59e0b;
+  --sidebar-primary-foreground: #1a1815;
+  --sidebar-accent: #3a3835;
+  --sidebar-accent-foreground: #f9f8f6;
+  --sidebar-border: #4a4844;
+  --sidebar-ring: #f59e0b;
 }
 
 @theme inline {

@@ -1,5 +1,5 @@
-import { ValidationEntry } from '@/components/health-chatbot/validation-entry';
+import { LandingPage } from '@/components/design-system/landing-page';
 
 export default function Page() {
-  return <ValidationEntry />;
+  return <LandingPage />;
 }

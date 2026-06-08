@@ -58,16 +58,16 @@ export function AppHeader({
         : t('roles.guest');
 
   return (
-    <header className="h-14 border-b border-border bg-card/90 backdrop-blur-sm flex items-center justify-between px-4 sticky top-0 z-30">
+    <header className="h-14 border-b flex items-center justify-between px-4 sticky top-0 z-30 bg-card" style={{ borderColor: 'var(--border)' }}>
       <div className="flex items-center gap-4">
-        <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-accent/70 dark:hover:bg-accent/40">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Heart className="h-4 w-4 text-primary" />
+        <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-accent/10">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+            <Heart className="h-4 w-4 text-accent" fill="currentColor" />
           </div>
           <span className="font-semibold text-sm hidden sm:block">HealthGuidelineEdge</span>
         </Link>
 
-        <nav className="hidden md:flex items-center border border-border rounded-lg p-0.5">
+        <nav className="hidden md:flex items-center border rounded-lg p-0.5" style={{ borderColor: 'var(--border)' }}>
           <Button
             variant={currentView === 'chat' ? 'secondary' : 'ghost'}
             size="sm"
