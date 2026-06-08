@@ -16,20 +16,21 @@ export function CitationChip({ citation, index, onClick, isActive }: CitationChi
     <button
       onClick={onClick}
       className={cn(
-        'inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium transition-all',
-        'border hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
-        isActive 
-          ? 'bg-primary text-primary-foreground border-primary' 
-          : 'bg-muted/50 text-muted-foreground border-border hover:text-foreground hover:border-muted-foreground/30'
+        'citation-marker inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium transition-all',
+        'focus:outline-none focus:ring-2 focus:ring-offset-1',
+        isActive ? 'ring-2' : ''
       )}
+      style={
+        isActive
+          ? { background: 'var(--amber)', color: 'var(--ink)', borderColor: 'var(--amber-dark)' }
+          : { background: 'var(--paper-2)', color: 'var(--ink-light)', borderColor: 'var(--window-border)' }
+      }
       title={`${citation.sourceTitle} - ${citation.sectionTitle}`}
     >
-      <span className={cn(
-        'flex items-center justify-center w-4 h-4 rounded text-[10px] font-bold',
-        isActive 
-          ? 'bg-primary-foreground/20 text-primary-foreground' 
-          : 'bg-muted text-muted-foreground'
-      )}>
+      <span
+        className="flex items-center justify-center w-4 h-4 rounded text-[10px] font-bold"
+        style={isActive ? { background: 'var(--amber-dark)', color: 'var(--paper)' } : { background: 'var(--window-border)', color: 'var(--ink)' }}
+      >
         {index}
       </span>
       <FileText className="h-3 w-3" />

@@ -58,39 +58,67 @@ export function AppHeader({
         : t('roles.guest');
 
   return (
-    <header className="h-14 border-b border-border bg-card/90 backdrop-blur-sm flex items-center justify-between px-4 sticky top-0 z-30">
-      <div className="flex items-center gap-4">
-        <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-accent/70 dark:hover:bg-accent/40">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Heart className="h-4 w-4 text-primary" />
+    <header
+      className="h-12 border-b flex items-center justify-between px-3 sticky top-0 z-30 backdrop-blur-sm"
+      style={{
+        background: 'var(--window-titlebar)',
+        borderColor: 'var(--window-border)',
+      }}
+    >
+      {/* Left — logo + nav tabs */}
+      <div className="flex items-center gap-3">
+        <Link
+          href="/"
+          className="flex items-center gap-2 rounded px-2 py-1 transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+        >
+          <div
+            className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
+            style={{ background: 'var(--amber)', color: 'var(--ink)' }}
+          >
+            <Heart className="h-3.5 w-3.5" />
           </div>
-          <span className="font-semibold text-sm hidden sm:block">HealthGuidelineEdge</span>
+          <span className="text-sm font-semibold hidden sm:block" style={{ color: 'var(--ink)' }}>
+            HealthGuidelineEdge
+          </span>
         </Link>
 
-        <nav className="hidden md:flex items-center border border-border rounded-lg p-0.5">
-          <Button
-            variant={currentView === 'chat' ? 'secondary' : 'ghost'}
-            size="sm"
-            className="h-7 px-3 text-xs"
+        {/* OS-style tab switcher */}
+        <nav
+          className="hidden md:flex items-center rounded p-0.5 gap-0.5"
+          style={{ background: 'var(--paper-2)', border: '1px solid var(--window-border)' }}
+        >
+          <button
+            type="button"
+            className="flex items-center gap-1.5 px-3 h-7 rounded text-xs font-medium transition-colors"
+            style={
+              currentView === 'chat'
+                ? { background: 'var(--paper)', color: 'var(--ink)', border: '1px solid var(--window-border)', boxShadow: '0 1px 3px var(--window-shadow)' }
+                : { background: 'transparent', color: 'var(--ink-light)' }
+            }
             onClick={() => onViewChange('chat')}
           >
-            <MessageSquare className="h-3.5 w-3.5 me-1.5" />
+            <MessageSquare className="h-3.5 w-3.5" />
             {t('header.chat')}
-          </Button>
+          </button>
           {canManageSources && (
-            <Button
-              variant={currentView === 'sources' ? 'secondary' : 'ghost'}
-              size="sm"
-              className="h-7 px-3 text-xs"
+            <button
+              type="button"
+              className="flex items-center gap-1.5 px-3 h-7 rounded text-xs font-medium transition-colors"
+              style={
+                currentView === 'sources'
+                  ? { background: 'var(--paper)', color: 'var(--ink)', border: '1px solid var(--window-border)', boxShadow: '0 1px 3px var(--window-shadow)' }
+                  : { background: 'transparent', color: 'var(--ink-light)' }
+              }
               onClick={() => onViewChange('sources')}
             >
-              <Database className="h-3.5 w-3.5 me-1.5" />
+              <Database className="h-3.5 w-3.5" />
               {t('header.sources')}
-            </Button>
+            </button>
           )}
         </nav>
       </div>
 
+      {/* Center — source + model selectors */}
       <div className="hidden lg:flex items-center gap-2">
         <SourceSelector
           sources={sources}
@@ -105,37 +133,74 @@ export function AppHeader({
         />
       </div>
 
-      <div className="flex items-center gap-2">
+      {/* Right — user info + controls */}
+      <div className="flex items-center gap-1.5">
         {currentView === 'chat' && onOpenHistory && (
-          <Button variant="ghost" size="icon-sm" className="md:hidden" onClick={() => void onOpenHistory()}>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="md:hidden"
+            onClick={() => void onOpenHistory()}
+          >
             <PanelLeft className="h-4 w-4" />
             <span className="sr-only">{t('header.openSessionHistory')}</span>
           </Button>
         )}
-        <div className="hidden lg:flex items-center gap-2">
-          <Badge variant={currentUser?.role === 'admin' ? 'default' : 'secondary'}>
+
+        <div className="hidden lg:flex items-center gap-2 me-1">
+          <Badge
+            variant={currentUser?.role === 'admin' ? 'default' : 'secondary'}
+            className="text-xs"
+            style={
+              currentUser?.role === 'admin'
+                ? { background: 'var(--amber)', color: 'var(--ink)', border: '1px solid var(--amber-dark)' }
+                : {}
+            }
+          >
             {roleLabel}
           </Badge>
-          <span className="max-w-[200px] truncate text-xs text-muted-foreground" title={currentUser?.email || t('header.guestSession')}>
+          <span
+            className="max-w-[180px] truncate text-xs"
+            style={{ color: 'var(--ink-light)' }}
+            title={currentUser?.email || t('header.guestSession')}
+          >
             {currentUser?.email || t('header.guestSession')}
           </span>
         </div>
+
         <PersianFontPreview />
         <LanguageToggle />
         <ThemeToggle />
+
         <div className="hidden sm:block">
           <ServiceStatusIndicator status={serviceStatus} />
         </div>
+
         {isAuthenticated ? (
-          <Button variant="ghost" size="sm" className="h-8" onClick={() => void onLogout?.()}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 px-2 text-xs"
+            style={{ color: 'var(--ink-light)' }}
+            onClick={() => void onLogout?.()}
+          >
             <LogOut className="h-3.5 w-3.5 me-1.5" />
             <span className="hidden sm:inline">{t('header.logout')}</span>
           </Button>
         ) : (
-          <Button variant="outline" size="sm" className="h-8" onClick={() => void onLogin?.()}>
-            <LogIn className="h-3.5 w-3.5 me-1.5" />
+          <button
+            type="button"
+            className="flex items-center gap-1.5 h-7 px-3 rounded text-xs font-medium transition-colors"
+            style={{
+              background: 'var(--amber)',
+              color: 'var(--ink)',
+              border: '1.5px solid var(--amber-dark)',
+            }}
+            onClick={() => void onLogin?.()}
+          >
+            <LogIn className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">{t('header.login')}</span>
-          </Button>
+          </button>
         )}
       </div>
     </header>

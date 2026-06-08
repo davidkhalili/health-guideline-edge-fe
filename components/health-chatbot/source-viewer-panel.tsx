@@ -82,22 +82,32 @@ export function SourceViewerPanel({ citation, onClose, isOpen, className }: Sour
 
   return (
     <aside
-      className={cn('h-full bg-card border-e border-border flex flex-col shadow-sm', className)}
+      className={cn('h-full flex flex-col', className)}
+      style={{ background: 'var(--window-chrome)', borderColor: 'var(--window-border)' }}
       role="dialog"
       aria-label={t('chat.sourceViewer')}
     >
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/30">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <BookOpen className="h-4 w-4 text-primary" />
-          </div>
-          <div>
-            <h2 className="text-sm font-semibold text-foreground">{t('chat.sourceViewerTitle')}</h2>
-            <p className="text-[10px] text-muted-foreground">{t('chat.citedReference')}</p>
-          </div>
+      {/* OS-style titlebar */}
+      <div
+        className="os-titlebar flex-shrink-0"
+        style={{ borderBottom: '1px solid var(--window-border)' }}
+      >
+        <div className="os-traffic-lights">
+          <button
+            type="button"
+            className="os-traffic-light os-traffic-light-close"
+            onClick={onClose}
+            aria-label={t('chat.closeSourceViewer')}
+          />
+          <span className="os-traffic-light os-traffic-light-minimize" />
+          <span className="os-traffic-light os-traffic-light-maximize" />
         </div>
-        <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8">
-          <X className="h-4 w-4" />
+        <div className="os-titlebar-drag flex items-center gap-1.5 text-xs font-medium" style={{ color: 'var(--ink)' }}>
+          <BookOpen className="h-3.5 w-3.5" style={{ color: 'var(--amber-dark)' }} />
+          {t('chat.sourceViewerTitle')}
+        </div>
+        <Button variant="ghost" size="icon" onClick={onClose} className="h-7 w-7 ms-auto" style={{ color: 'var(--ink-light)' }}>
+          <X className="h-3.5 w-3.5" />
           <span className="sr-only">{t('chat.closeSourceViewer')}</span>
         </Button>
       </div>
@@ -150,7 +160,7 @@ export function SourceViewerPanel({ citation, onClose, isOpen, className }: Sour
               </div>
             </div>
 
-            <div className="p-4 bg-muted/30 rounded-lg border border-border">{renderHighlightedText()}</div>
+            <div className="p-4 rounded-lg" style={{ background: 'var(--paper)', border: '1px solid var(--window-border)' }}>{renderHighlightedText()}</div>
 
             {citation.relevanceScore && (
               <div className="mt-4 flex items-center gap-2">

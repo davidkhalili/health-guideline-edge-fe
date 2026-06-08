@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
-import { ArrowRight, Heart, Loader2, LogIn, ShieldCheck, UserPlus } from 'lucide-react';
+import { ArrowRight, Heart, Loader as Loader2, LogIn, ShieldCheck, UserPlus } from 'lucide-react';
 import {
   getAuthConfig,
   getAuthStatus,
@@ -17,7 +17,6 @@ import { ThemeToggle } from './theme-toggle';
 import { LanguageToggle } from './language-toggle';
 import { PersianFontPreview } from './persian-font-preview';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -30,6 +29,36 @@ import {
 } from '@/components/ui/dialog';
 
 type AuthMode = 'login' | 'register';
+
+function AuthHeader({ children }: { children?: React.ReactNode }) {
+  return (
+    <header
+      className="h-12 border-b flex items-center justify-between px-4 sticky top-0 z-40 backdrop-blur-sm"
+      style={{ background: 'var(--window-titlebar)', borderColor: 'var(--window-border)' }}
+    >
+      <Link
+        href="/"
+        className="flex items-center gap-2 rounded px-2 py-1 transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+      >
+        <div
+          className="w-7 h-7 rounded-md flex items-center justify-center"
+          style={{ background: 'var(--amber)', color: 'var(--ink)' }}
+        >
+          <Heart className="h-3.5 w-3.5" />
+        </div>
+        <span className="text-sm font-semibold hidden sm:block" style={{ color: 'var(--ink)' }}>
+          HealthGuidelineEdge
+        </span>
+      </Link>
+      <div className="flex items-center gap-2">
+        {children}
+        <PersianFontPreview />
+        <LanguageToggle />
+        <ThemeToggle />
+      </div>
+    </header>
+  );
+}
 
 export function AuthPage() {
   const router = useRouter();
@@ -46,9 +75,7 @@ export function AuthPage() {
   const [guestDialogOpen, setGuestDialogOpen] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
+    if (typeof window === 'undefined') return;
     const requested = (new URLSearchParams(window.location.search).get('next') || '/chat').trim();
     setRedirectTarget(requested.startsWith('/') ? requested : '/chat');
   }, []);
@@ -58,41 +85,28 @@ export function AuthPage() {
     const initialize = async () => {
       try {
         const [authStatus, authConfig] = await Promise.all([getAuthStatus(), getAuthConfig()]);
-        if (cancelled) {
-          return;
-        }
+        if (cancelled) return;
         setGoogleEnabled(authConfig.googleEnabled);
         if (authStatus.authenticated) {
           router.replace(redirectTarget);
           return;
         }
       } catch {
-        if (!cancelled) {
-          setGoogleEnabled(false);
-        }
+        if (!cancelled) setGoogleEnabled(false);
       } finally {
-        if (!cancelled) {
-          setIsLoadingSession(false);
-        }
+        if (!cancelled) setIsLoadingSession(false);
       }
     };
     void initialize();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [redirectTarget, router]);
 
-  const submitLabel = mode === 'login' ? t('auth.signIn') : t('auth.createAccount');
-  const submitIcon = mode === 'login' ? LogIn : UserPlus;
   const googleLocaleOverride = { locale: locale === 'fa' ? 'fa' : 'en' } as unknown as Record<string, never>;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (isSubmitting) {
-      return;
-    }
+    if (isSubmitting) return;
     setError('');
-
     const normalizedEmail = email.trim();
     if (!normalizedEmail || !password) {
       setError(t('auth.emailPasswordRequired'));
@@ -102,7 +116,6 @@ export function AuthPage() {
       setError(t('auth.passwordMismatch'));
       return;
     }
-
     setIsSubmitting(true);
     try {
       if (mode === 'login') {
@@ -119,9 +132,7 @@ export function AuthPage() {
   };
 
   const handleGoogleLogin = async (idToken: string) => {
-    if (isSubmitting) {
-      return;
-    }
+    if (isSubmitting) return;
     setError('');
     setIsSubmitting(true);
     try {
@@ -139,30 +150,12 @@ export function AuthPage() {
     router.replace('/chat');
   };
 
-  const headerControls = (
-    <div className="flex items-center gap-2">
-      <PersianFontPreview />
-      <LanguageToggle />
-      <ThemeToggle />
-    </div>
-  );
-
   if (isLoadingSession) {
     return (
-      <div className="min-h-screen bg-background text-foreground">
-        <header className="border-b border-border bg-card/85 backdrop-blur-sm">
-          <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4">
-            <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-accent/70 dark:hover:bg-accent/40">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-                <Heart className="h-4 w-4 text-primary" />
-              </div>
-              <span className="text-sm font-semibold">HealthGuidelineEdge</span>
-            </Link>
-            {headerControls}
-          </div>
-        </header>
-        <main className="flex min-h-[calc(100vh-56px)] items-center justify-center p-6">
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+      <div className="min-h-screen" style={{ background: 'var(--background)', color: 'var(--ink)' }}>
+        <AuthHeader />
+        <main className="flex min-h-[calc(100vh-48px)] items-center justify-center p-6">
+          <div className="flex items-center gap-3 text-sm" style={{ color: 'var(--ink-light)' }}>
             <Loader2 className="h-4 w-4 animate-spin" />
             {t('auth.checkingSession')}
           </div>
@@ -171,109 +164,128 @@ export function AuthPage() {
     );
   }
 
-  const SubmitIcon = submitIcon;
-
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border bg-card/85 backdrop-blur-sm">
-        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-accent/70 dark:hover:bg-accent/40">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-              <Heart className="h-4 w-4 text-primary" />
-            </div>
-            <span className="text-sm font-semibold">HealthGuidelineEdge</span>
-          </Link>
-          {headerControls}
-        </div>
-      </header>
+    <div className="min-h-screen os-desktop" style={{ color: 'var(--ink)' }}>
+      <AuthHeader />
 
-      <main className="flex min-h-[calc(100vh-56px)] items-center justify-center p-6">
-        <Card className="w-full max-w-md border-border/80">
-          <CardHeader className="space-y-2">
-            <CardTitle className="flex items-center gap-2 text-xl">
-              <ShieldCheck className="h-5 w-5 text-primary" />
+      <main className="flex min-h-[calc(100vh-48px)] items-center justify-center p-6">
+        {/* Auth form as an OS window */}
+        <div
+          className="os-window window-appear w-full max-w-md"
+          style={{ boxShadow: '0 8px 40px var(--window-shadow)' }}
+        >
+          {/* Titlebar */}
+          <div className="os-titlebar">
+            <div className="os-traffic-lights">
+              <span className="os-traffic-light os-traffic-light-close" />
+              <span className="os-traffic-light os-traffic-light-minimize" />
+              <span className="os-traffic-light os-traffic-light-maximize" />
+            </div>
+            <div className="os-titlebar-drag flex items-center gap-1.5 text-xs font-medium" style={{ color: 'var(--ink)' }}>
+              <ShieldCheck className="h-3.5 w-3.5" style={{ color: 'var(--amber-dark)' }} />
               {t('auth.secureAccess')}
-            </CardTitle>
-            <CardDescription>{t('auth.secureAccessDesc')}</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-2">
-              <Button
-                type="button"
-                variant={mode === 'login' ? 'default' : 'outline'}
-                onClick={() => setMode('login')}
-                disabled={isSubmitting}
-              >
-                {t('auth.login')}
-              </Button>
-              <Button
-                type="button"
-                variant={mode === 'register' ? 'default' : 'outline'}
-                onClick={() => setMode('register')}
-                disabled={isSubmitting}
-              >
-                {t('auth.createUser')}
-              </Button>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="p-6 space-y-5">
+            <div>
+              <p className="text-xs" style={{ color: 'var(--ink-light)' }}>{t('auth.secureAccessDesc')}</p>
+            </div>
+
+            {/* Mode toggle */}
+            <div
+              className="grid grid-cols-2 gap-0.5 rounded-md p-0.5"
+              style={{ background: 'var(--paper-2)', border: '1px solid var(--window-border)' }}
+            >
+              {(['login', 'register'] as const).map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  className="rounded px-3 py-2 text-sm font-medium transition-colors"
+                  style={
+                    mode === m
+                      ? { background: 'var(--paper)', color: 'var(--ink)', boxShadow: '0 1px 3px var(--window-shadow)', border: '1px solid var(--window-border)' }
+                      : { background: 'transparent', color: 'var(--ink-light)' }
+                  }
+                  onClick={() => { setMode(m); setError(''); }}
+                  disabled={isSubmitting}
+                >
+                  {m === 'login' ? t('auth.login') : t('auth.createUser')}
+                </button>
+              ))}
             </div>
 
             <form className="space-y-3" onSubmit={handleSubmit}>
               <div className="space-y-1.5">
-                <Label htmlFor="auth-email">{t('auth.email')}</Label>
+                <Label htmlFor="auth-email" className="text-xs font-medium" style={{ color: 'var(--ink)' }}>{t('auth.email')}</Label>
                 <Input
                   id="auth-email"
                   autoComplete="email"
                   value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder={t('auth.emailPlaceholder')}
                   disabled={isSubmitting}
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="auth-password">{t('auth.password')}</Label>
+                <Label htmlFor="auth-password" className="text-xs font-medium" style={{ color: 'var(--ink)' }}>{t('auth.password')}</Label>
                 <Input
                   id="auth-password"
                   type="password"
                   autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                   value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  placeholder={
-                    mode === 'login' ? t('auth.passwordPlaceholder') : t('auth.registerPasswordPlaceholder')
-                  }
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={mode === 'login' ? t('auth.passwordPlaceholder') : t('auth.registerPasswordPlaceholder')}
                   disabled={isSubmitting}
                 />
               </div>
               {mode === 'register' && (
                 <div className="space-y-1.5">
-                  <Label htmlFor="auth-confirm-password">{t('auth.confirmPassword')}</Label>
+                  <Label htmlFor="auth-confirm-password" className="text-xs font-medium" style={{ color: 'var(--ink)' }}>{t('auth.confirmPassword')}</Label>
                   <Input
                     id="auth-confirm-password"
                     type="password"
                     autoComplete="new-password"
                     value={confirmPassword}
-                    onChange={(event) => setConfirmPassword(event.target.value)}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder={t('auth.confirmPasswordPlaceholder')}
                     disabled={isSubmitting}
                   />
                 </div>
               )}
 
-              {error && <p className="text-sm text-destructive">{error}</p>}
+              {error && (
+                <p className="text-sm" style={{ color: 'var(--destructive)' }}>{error}</p>
+              )}
 
-              <Button className="w-full" type="submit" disabled={isSubmitting}>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition-opacity disabled:opacity-60"
+                style={{ background: 'var(--amber)', color: 'var(--ink)', border: '1.5px solid var(--amber-dark)' }}
+              >
                 {isSubmitting ? (
-                  <Loader2 className="me-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : mode === 'login' ? (
+                  <LogIn className="h-4 w-4" />
                 ) : (
-                  <SubmitIcon className="me-2 h-4 w-4" />
+                  <UserPlus className="h-4 w-4" />
                 )}
-                {submitLabel}
-              </Button>
+                {mode === 'login' ? t('auth.signIn') : t('auth.createAccount')}
+              </button>
             </form>
 
             {googleEnabled && (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="relative text-center">
-                  <span className="bg-background px-2 text-xs text-muted-foreground">{t('common.or')}</span>
-                  <div className="absolute inset-x-0 top-1/2 -z-10 h-px bg-border" />
+                  <span
+                    className="px-2 text-xs relative z-10"
+                    style={{ background: 'var(--window-chrome)', color: 'var(--ink-light)' }}
+                  >
+                    {t('common.or')}
+                  </span>
+                  <div className="absolute inset-x-0 top-1/2 -z-0 h-px" style={{ background: 'var(--window-border)' }} />
                 </div>
                 <div className="flex justify-center">
                   <GoogleLogin
@@ -293,21 +305,25 @@ export function AuthPage() {
               </div>
             )}
 
-            <div className="rounded-md border border-border bg-muted/35 p-3">
-              <p className="text-xs text-muted-foreground">{t('auth.guestTrialHint')}</p>
-              <Button
+            {/* Guest option */}
+            <div
+              className="rounded-lg p-3 space-y-2"
+              style={{ background: 'var(--paper-2)', border: '1px solid var(--window-border)' }}
+            >
+              <p className="text-xs" style={{ color: 'var(--ink-light)' }}>{t('auth.guestTrialHint')}</p>
+              <button
                 type="button"
-                variant="outline"
-                className="mt-2 w-full"
+                className="w-full flex items-center justify-center gap-2 rounded px-3 py-2 text-xs font-medium transition-colors"
+                style={{ background: 'transparent', color: 'var(--ink-light)', border: '1px solid var(--window-border)' }}
                 onClick={() => setGuestDialogOpen(true)}
                 disabled={isSubmitting}
               >
-                <ArrowRight className="me-2 h-4 w-4" />
+                <ArrowRight className="h-3.5 w-3.5" />
                 {t('auth.continueWithoutLogin')}
-              </Button>
+              </button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </main>
 
       <Dialog open={guestDialogOpen} onOpenChange={setGuestDialogOpen}>
@@ -316,7 +332,7 @@ export function AuthPage() {
             <DialogTitle>{t('auth.guestLimitationsTitle')}</DialogTitle>
             <DialogDescription>{t('auth.guestLimitationsDesc')}</DialogDescription>
           </DialogHeader>
-          <div className="space-y-2 text-sm text-muted-foreground">
+          <div className="space-y-2 text-sm" style={{ color: 'var(--ink-light)' }}>
             <p>- {t('auth.guestLimit1')}</p>
             <p>- {t('auth.guestLimit2')}</p>
             <p>- {t('auth.guestLimit3')}</p>
@@ -326,7 +342,12 @@ export function AuthPage() {
             <Button variant="outline" onClick={() => setGuestDialogOpen(false)}>
               {t('common.back')}
             </Button>
-            <Button onClick={handleContinueAsGuest}>{t('auth.continueAsGuest')}</Button>
+            <Button
+              style={{ background: 'var(--amber)', color: 'var(--ink)', border: '1.5px solid var(--amber-dark)' }}
+              onClick={handleContinueAsGuest}
+            >
+              {t('auth.continueAsGuest')}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
